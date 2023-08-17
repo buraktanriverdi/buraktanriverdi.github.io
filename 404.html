@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="tailwind.js"></script>
+  <title>Gradient Background with Grid Lines</title>
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .grid-lines {
+        background-image:
+          linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 100px 100px;
+      }
+    }
+
+    @media (prefers-color-scheme: light) {
+      .grid-lines {
+        background-image:
+          linear-gradient(to right, rgba(0, 83, 83, 0.05) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(0, 83, 83, 0.05) 1px, transparent 1px);
+        background-size: 100px 100px;
+      }
+    }
+
+    .w-32:hover .scale-x-0 {
+      transform: scale-x-100;
+    }
+
+    .animated {
+      opacity: 0;
+      transform: translateY(100px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+  </style>
+  <meta name="theme-color" content="#f1f4f8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#101729" media="(prefers-color-scheme: dark)">
+</head>
+
+<body class="text-slate-900/80 dark:text-white bg-yellow-5 dark:bg-slate-900">
+  <div style="background-image: url('back.avif'); background-repeat: no-repeat;"
+    class="absolute top-0 left-0 right-0 w-full h-full opacity-100 dark:opacity-30"></div>
+  <div id="mouse_gradient" class="pointer-events-none fixed inset-0 z-30 transition duration-300 lg:absolute"
+    style="background: radial-gradient(600px at 1230px 396px, rgba(29, 78, 216, 0.15), transparent 80%);"></div>
+
+  <nav class="md:p-16 md:px-24 p-8 absolute top-0 left-0 right-0">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <a href="/"
+          class="cursor-pointer font-semibold text-2xl dark:hover:text-cyan-200 hover:text-cyan-400 hover:drop-shadow-lg duration-200">BURAK
+          TANRIVERDİ</a>
+      </div>
+      <div class="flex hidden md:block font-semibold text-2xl">
+        <a href="/hakkimda"
+          class="cursor-pointer font-semibold text-lg ml-4 pb-1 relative before:absolute before:bottom-0 before:w-0 before:border-b-2 before:duration-300 before:ease-in-out after:absoluteafter:duration-300 after:ease-in-out hover:before:w-full">HAKKIMDA</a>
+        <a href="/hakkimda"
+          class="cursor-pointer font-semibold text-lg ml-4 pb-1 relative before:absolute before:bottom-0 before:w-0 before:border-b-2 before:duration-300 before:ease-in-out after:absoluteafter:duration-300 after:ease-in-out hover:before:w-full">PROJELER</a>
+        <a href="/hakkimda"
+          class="cursor-pointer font-semibold text-lg ml-4 pb-1 relative before:absolute before:bottom-0 before:w-0 before:border-b-2 before:duration-300 before:ease-in-out after:absoluteafter:duration-300 after:ease-in-out hover:before:w-full">İLETİŞİM</a>
+      </div>
+      <div class="flex md:hidden">
+        <button id="menuButton" class="">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div
+    class="bg-gradient-to-t from-yellow-50/80 to-slate-100 dark:bg-gradient-to-t dark:from-slate-900 dark:to-slate-900">
+    <div class="grid-lines min-h-screen flex justify-center">
+
+      <div class="max-w-7xl md:p-10 md:m-10 md:mt-48 mt-24 p-2 m-2">
+        <h1 id="anim-0" class="animated text-4xl font-semibold">404 Not Found</h1>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="fixed -bottom-8 -left-8 overflow-hidden max-w-full">
+    <div style="font-size: 14rem;"
+      class="pointer-events-none text-9xl font-serif font-thin subpixel-antialiased opacity-[0.02] dark:opacity-[0.01] truncate">
+      Burak
+      Tanrıverdi</div>
+  </div>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const animatedElements = document.querySelectorAll('[id^="anim-"]');
+
+      animatedElements.forEach((element, index) => {
+        element.style.transitionDelay = `${index * 0.1}s`;
+        //element.classList.add("animated");
+      });
+
+      setTimeout(() => {
+        animatedElements.forEach((element) => {
+          element.style.opacity = "1";
+          element.style.transform = "translateY(0)";
+        });
+      }, 200);
+    });
+
+    var colors = {
+      left_rgb: [200, 50, 155],
+      right_rgb: [0, 50, 255],
+    }
+
+    var x, y, cursor;
+
+    document.addEventListener("mousemove", function (event) {
+      x = event.clientX;
+      y = event.clientY;
+      cursor = getComputedStyle(event.target).cursor
+
+      setGradient();
+    });
+
+    function setGradient() {
+      var currentColor = [
+        colors.left_rgb[0] + (colors.right_rgb[0] - colors.left_rgb[0]) * x / window.innerWidth,
+        colors.left_rgb[1] + (colors.right_rgb[1] - colors.left_rgb[1]) * x / window.innerWidth,
+        colors.left_rgb[2] + (colors.right_rgb[2] - colors.left_rgb[2]) * x / window.innerWidth
+      ];
+
+      if (cursor == "pointer") {
+        document.getElementById("mouse_gradient").style = "background: radial-gradient(400px at " + x + "px " + y + "px, rgba(" + currentColor[0] + ", " + currentColor[1] + ", " + currentColor[2] + ", 0.15), transparent 80%);";
+      }
+      else {
+        document.getElementById("mouse_gradient").style = "background: radial-gradient(400px at " + x + "px " + y + "px, rgba(" + currentColor[0] + ", " + currentColor[1] + ", " + currentColor[2] + ", 0.10), transparent 80%);";
+        console.log("hele");
+      }
+    }
+
+  </script>
+
+
+
+</body>
+
+</html>
